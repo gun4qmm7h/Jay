@@ -188,6 +188,13 @@
       .hamburger { display:flex; }
       nav { display: none; }
       .mobile-nav { display:flex; }
+      .contact-actions {
+        flex-wrap: wrap;
+        gap: 1rem;
+        margin-top: 1rem;
+        display: flex;
+        flex-direction: column;
+      }
     }
   </style>
 </head>
@@ -244,10 +251,7 @@
     <section id="education">
       <h2>Education</h2>
       <h4>Mohawk College</h4>
-      <picture>
-        <source media="(max-width: 600px)" srcset="scr/MH-logo-small.png">
-        <img src="scr/MH-logo.png" alt="Mohawk College Logo" style="width:70px; margin-left: -15px;" loading="lazy">
-      </picture>
+      <img src="scr/MH-logo.png" alt="Mohawk College Logo" style="width:70px; margin-left: -15px;" loading="lazy">
       <p>Studying Program 585 at Mohawk College for the past two years, gaining both theoretical knowledge and hands-on cybersecurity experience. Worked at <a href="https://ideaworks.mohawkcollege.ca/research-centre/health-and-e-health-digital-innovation-centre-medic/" style="color: var(--accent-color);">Mohawk Medic</a>, strengthening technical and problem-solving skills.</p>
     </section>
 
@@ -294,7 +298,7 @@
     });
 
     const typedEl = document.getElementById('typed');
-    const text = "Network Administration and Cybersecurity";
+    const text = "Network Admin and Cybersecurity";
     let idx = 0;
     function type() {
       if (idx < text.length) {
