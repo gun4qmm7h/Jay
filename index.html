@@ -193,6 +193,19 @@
         margin-top: 0.5rem;
       }
       nav a { padding: 0.5rem; }
+      #desktop-nav {
+        display: flex;
+        flex-wrap: nowrap;
+        justify-content: center;
+        align-items: center;
+        gap: clamp(0.5rem, 2vw, 2rem);
+      }
+      #desktop-nav a {
+        white-space: nowrap;
+        font-size: clamp(14px, 4vw, 18px);
+        flex: 1 1 auto;
+        text-align: center;
+      }
     }
 
     .pfp-wrapper { width: 120px; height: 120px; margin: 4rem auto 1.5rem;
