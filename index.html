@@ -1,374 +1,280 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Jay Taj</title>
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&family=Roboto+Slab:wght@400;700&display=swap" rel="stylesheet">
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Jay's Portfolio</title>
+  <meta name="description" content="Portfolio of Jay Taj – cybersecurity-focused student. Dark, minimal, responsive." />
   <style>
-    :root {
-      --bg-color: #0d0f12;
-      --text-color: #d1d5db;
-      --logo-color: #728199;
-      --text-light: #cbd5e1;
-      --text-muted: #94a3b8;
-      --accent-color: #8b5cf6;
-      --accent2-color: #22d3ee;
-      --accent-hover: #7c3aed;
-      --card-bg: #111827;
-      --footer-bg: #111827;
-      --transition-speed: 0.3s;
+    :root{
+      --bg:#0d0d0d;      /* background */
+      --fg:#eaeaea;      /* primary text */
+      --muted:#9aa0a6;   /* secondary text */
+      --card:#151515;    /* card background */
+      --stroke:#2a2a2a;  /* hairlines */
+      --accent:#cfcfcf;  /* monochrome accent */
+      --shadow: 0 10px 30px rgba(0,0,0,.45);
     }
-    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-    html { scroll-behavior: smooth; font-size: 20px}
-    body { font-family: 'Inter', sans-serif; background: var(--bg-color); color: var(--text-color); line-height: 1.6; }
-    a { text-decoration: none; }
-    img { display: block; max-width: 100%; }
 
-    /* Skip link */
-    .skip-link {
-      position: absolute;
-      top: -40px;
-      left: 0;
-      background: var(--accent-color);
-      color: var(--bg-color);
-      padding: 8px;
-      z-index: 2000;
-      transition: top 0.3s;
+    /* Base */
+    *{box-sizing:border-box}
+    html{scroll-behavior:smooth}
+    body{
+      margin:0; background:var(--bg); color:var(--fg);
+      font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Fira Code", monospace;
+      line-height:1.6;
     }
-    .skip-link:focus { top: 0; }
+    a{color:var(--fg); text-decoration:none}
+    a:hover{opacity:.9}
 
-    header {
-      position: fixed;
+    /* Fixed header nav */
+    header{
+      position:fixed; inset-inline:0; top:0; z-index:10;
+      background:linear-gradient(to bottom, rgba(13,13,13,.9), rgba(13,13,13,.6), transparent);
+      backdrop-filter:saturate(120%) blur(6px);
+    }
+    .nav{
+      max-width:1100px; margin:auto; padding:14px 18px; display:flex; align-items:center; gap:12px;
+      background-color: --accent;
+    }
+    .brand{font-weight:700; letter-spacing:.5px}
+    .spacer{flex:1}
+    .nav a.link{padding:6px 10px; border-radius:10px; border:1px solid transparent}
+    .nav a.link:hover{border-color:var(--stroke); background:#111}
+
+    /* Sections */
+    section{padding:88px 18px}
+    .wrap{max-width:1100px; margin:auto}
+
+    /* Hero */
+    .hero{min-height:88svh; display:grid; place-items:center; text-align:center; position:relative}
+    .title{font-size:clamp(2rem, 5vw, 3.5rem); line-height:1.15; margin:0 0 10px}
+    .tag{color:var(--muted); margin:0 0 26px}
+    .cta{display:flex; gap:12px; justify-content:center; flex-wrap:wrap}
+    .btn{
+      padding:12px 16px; border:1px solid var(--stroke); border-radius:14px; background:#111; color:var(--fg);
+      box-shadow:var(--shadow); transition:transform .12s ease, border-color .2s ease;
+    }
+    .btn:hover{transform:translateY(-1px); border-color:var(--accent)}
+
+    /* Grids */
+    .grid{display:grid; gap:18px}
+    .grid.cols-2{grid-template-columns:repeat(2, minmax(0,1fr))}
+    .grid.cols-3{grid-template-columns:repeat(3, minmax(0,1fr))}
+    @media (max-width:900px){
+      .grid.cols-2{grid-template-columns:1fr}
+      .grid.cols-3{grid-template-columns:1fr}
+    }
+
+    /* Cards */
+    .card{
+      background:linear-gradient(180deg, #121212, #0f0f0f); border:1px solid var(--stroke); border-radius:18px; padding:18px;
+      box-shadow:var(--shadow);
+    }
+    .card h3{margin:0 0 8px}
+    .muted{color:var(--muted)}
+
+    /* Project media placeholder */
+    .thumb{aspect-ratio:16/9; background:#0e0e0e; border:1px dashed #2b2b2b; border-radius:12px; display:grid; place-items:center; color:#6b6b6b; font-size:.9rem; margin-bottom:12px}
+
+    .project-img {
       width: 100%;
-      background: rgba(13,15,18,0.8);
-      backdrop-filter: blur(10px);
-      z-index: 1000;
-      padding: clamp(1rem, 2vw, 2rem);
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-    }
-    .logo { font-size: clamp(1.25rem, 2.5vw, 1.5rem); font-weight: 700; color: var(--logo-color); }
-    nav { display: flex; gap: clamp(0.5rem, 1vw, 1.5rem); }
-    nav a {
-      position: relative;
-      color: var(--text-color);
-      font-size: clamp(0.875rem, 1.5vw, 1rem);
-      transition: color var(--transition-speed);
-      padding-bottom: 4px;
-    }
-    nav a.active,
-    nav a:hover { color: var(--accent-hover); }
-    nav a::after {
-      content: '';
-      position: absolute;
-      width: 0;
-      height: 2px;
-      bottom: 0;
-      left: 0;
-      background: var(--accent-color);
-      transition: width var(--transition-speed);
-    }
-    nav a.active::after,
-    nav a:hover::after { width: 100%; }
-
-    .hamburger { display: none; flex-direction: column; cursor: pointer; gap: 5px; }
-    .hamburger div { width: 25px; height: 3px; background: var(--text-color); transition: transform var(--transition-speed), opacity var(--transition-speed); }
-    .mobile-nav {
-      position: fixed;
-      top: 0;
-      right: -100%;
-      width: 200px;
-      height: 100vh;
-      background: var(--bg-color);
-      padding-top: 4rem;
-      display: flex;
-      flex-direction: column;
-      gap: 1.5rem;
-      transition: right var(--transition-speed);
-    }
-    .mobile-nav.open { right: 0; }
-
-    section {
-      padding: clamp(3rem, 8vw, 6rem) 2rem;
-      min-height: 100vh;
-      opacity: 0;
-      transform: translateY(20px);
-      transition: opacity 0.6s ease-out, transform 0.6s ease-out;
-    }
-    section.visible > * { animation: fadeInUp 0.6s ease-out forwards; }
-    section.visible { opacity: 1; transform: translateY(0); }
-    @keyframes fadeInUp { from { opacity: 0; transform: translateY(20px);} to { opacity:1; transform: translateY(0);} }
-
-    #home {
-      position: relative;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      text-align: center;
-    }
-
-    .typed { font-family: 'Roboto Slab', serif; font-size: clamp(1.25rem, 3vw, 2rem); color: var(--accent2-color); overflow: hidden; white-space: nowrap; border-right: .15em solid var(--accent2-color); }
-
-    .pfp-wrapper {
-      width: clamp(100px, 20vw, 150px);
-      height: clamp(100px, 20vw, 150px);
-      border-radius: 50%;
-      overflow: hidden;
-      border: 3px solid var(--logo-color);
-      margin: clamp(1rem, 4vw, 2rem) 0;
-    }
-
-    #projects {
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-    }
-
-    .projects {
-      justify-content: center;
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-      gap: clamp(1rem, 2vw, 2rem);
-      max-width: 1200px;
-    }
-    .project-card {
-      background: var(--card-bg);
+      max-height: 200px;
+      object-fit: contain; /* Keeps full logo visible */
+      background-color: #111; /* Fills empty space for mono theme */
       border-radius: 12px;
-      padding: clamp(1rem, 2vw, 1.5rem);
-      box-shadow: 0 4px 6px rgba(0,0,0,0.7);
-      transition: transform var(--transition-speed), box-shadow var(--transition-speed), border-color var(--transition-speed);
-      position: relative;
-    }
-    .project-card:hover {
-      transform: translateY(-5px);
-      box-shadow: 0 8px 12px rgba(0,0,0,0.9);
-      border: 2px solid var(--accent-color);
-    }
-    .project-card img { width: 100%; height: auto; border-radius: 8px; margin-bottom: 1rem; }
-    .project-card .overlay {
-      position: absolute; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,0.6); color:#fff; display:flex; justify-content:center; align-items:center; opacity:0; transition: opacity var(--transition-speed);
-      border-radius: 12px;
-    }
-    .project-card:hover .overlay { opacity:1; }
-
-    #contact {text-align: center;}
-
-    .contact-actions {
-      flex-wrap: wrap;
-      gap: 1rem;
-      margin-top: 1rem;
+      margin-bottom: 1rem;
+      padding: 10px; /* Optional breathing room */
     }
 
-    .contact-button, .resume-button {
-      border-radius: 8px;
-      font-weight: 600;
-      padding: 0.75rem 1.5rem;
-      transition: background var(--transition-speed), color var(--transition-speed);
-    }
-    .contact-button {
-      background: linear-gradient(135deg, var(--accent-color), var(--accent2-color));
-      color: var(--bg-color);
-    }
-    .contact-button:hover { background: linear-gradient(135deg, var(--accent-hover), var(--accent2-color)); }
-    .resume-button {
-      background: transparent;
-      color: var(--accent-color);
-      border: 2px solid var(--accent-color);
-      padding: 0.5rem 1.25rem;
-    }
-    .resume-button:hover { background: var(--accent-color); color: var(--bg-color); }
 
-    footer { text-align:center; padding: clamp(1rem,3vw,2rem); background: var(--footer-bg); }
+    /* Contact */
+    .contact-box{display:grid; place-items:center; text-align:center; gap:10px}
 
-    @media (max-width: 600px) {
-      header { flex-direction: column; align-items: center; }
-      nav {
-        flex-wrap: wrap;
-        justify-content: center;
-        gap: 0.75rem;
-        margin-top: 0.5rem;
-      }
-      nav a { padding: 0.5rem; }
-      #desktop-nav {
-        display: flex;
-        flex-wrap: nowrap;
-        justify-content: center;
-        align-items: center;
-        gap: clamp(0.5rem, 2vw, 2rem);
-      }
-      #desktop-nav a {
-        white-space: nowrap;
-        font-size: clamp(14px, 4vw, 18px);
-        flex: 1 1 auto;
-        text-align: center;
-      }
-    }
+    /* Footer */
+    footer{border-top:1px solid var(--stroke); padding:26px 18px; color:var(--muted); text-align:center}
 
-    .pfp-wrapper { width: 120px; height: 120px; margin: 4rem auto 1.5rem;
-      border-radius: 50%; overflow: hidden; border: 3px solid var(--logo-color);
-    }
-    .pfp { width: 100%; height: 100%; object-fit: cover; }
-    #home h1 { text-align: center; font-size: 2.5rem; color: var(--text-light); margin: 1rem 0; }
-    #home p { text-align: center; color: var(--text-muted); max-width: 600px; margin: 0 auto; }
+    /* Particle canvas behind everything */
+    #bg-canvas{position:fixed; inset:0; z-index:-1; display:block}
 
-    .projects { display: grid; grid-template-columns: repeat(auto-fit,minmax(250px,1fr)); gap: 1.5rem; }
-    .project-card { background: var(--card-bg); padding: 1.5rem; border-radius: 12px;
-      box-shadow: 0 4px 6px rgba(0,0,0,0.7); transition: transform var(--transition-speed);
-    }
-    .project-card:hover { transform: translateY(-5px); }
-    .project-card img { width: 100%; border-radius: 8px; margin-bottom: 1rem; }
+    /* Reveal on scroll */
+    .reveal{opacity:0; transform:translateY(12px); transition:opacity .6s ease, transform .6s ease}
+    .reveal.show{opacity:1; transform:none}
 
-    #contact { text-align: center; }
-    .contact-actions { display: flex; flex-direction: column; align-items: center;
-      gap: 1rem; margin-top: 2rem;
+    /* Respect reduced motion */
+    @media (prefers-reduced-motion: reduce){
+      html{scroll-behavior:auto}
+      .reveal{transition:none}
+      .btn{transition:none}
     }
-    .contact-button, .resume-button { display: inline-block; border-radius: 8px;
-      font-weight: 600; transition: background var(--transition-speed), color var(--transition-speed);
-    }
-    .contact-button {
-      padding: 0.75rem 1.5rem; background: var(--accent-color); color: var(--bg-color);
-    }
-    .contact-button:hover { background: var(--accent-hover); }
-    .resume-button {
-      padding: 0.5rem 1.25rem; background: transparent; color: var(--accent-color);
-      border: 2px solid var(--accent-color);
-    }
-    .resume-button:hover { background: var(--accent-color); color: var(--bg-color); }
-
-    footer { text-align: center; padding: 2rem 1rem; background: var(--footer-bg);
-      font-size: 0.9rem;
-    }
-
   </style>
 </head>
 <body>
+  <a class="sr-only" href="#about">Skip to content</a>
 
+  <!-- Background Canvas -->
+  <canvas id="bg-canvas" aria-hidden="true"></canvas>
+
+  <!-- Header / Nav -->
   <header>
-    <div class="logo">Jay Taj</div>
-    <nav id="desktop-nav">
-      <a href="#home">Home</a>
-      <a href="#about">About</a>
-      <a href="#projects">Projects</a>
-      <a href="#education">Education</a>
-      <a href="#contact">Contact</a>
+    <nav class="nav">
+      <div class="brand">Jay Taj</div>
+      <div class="spacer"></div>
+      <a class="link" href="#about">About</a>
+      <a class="link" href="#skills">Skills</a>
+      <a class="link" href="#projects">Projects</a>
+      <a class="link" href="#contact">Contact</a>
     </nav>
-    <div class="hamburger" id="hamburger">
-      <div></div><div></div><div></div>
-    </div>
-    <div class="mobile-nav" id="mobile-nav">
-      <a href="#home">Home</a>
-      <a href="#about">About</a>
-      <a href="#projects">Projects</a>
-      <a href="#education">Education</a>
-      <a href="#contact">Contact</a>
-    </div>
   </header>
 
-  <main id="main">
-    <section id="home">
-      <div class="pfp-wrapper">
-        <img src="scr/pfp.png" alt="Profile Picture" class="pfp" loading="lazy">
+  <!-- Hero -->
+  <section class="hero" id="home">
+    <div class="wrap">
+      <h1 class="title">Jay Taj</h1>
+      <p class="tag">Cybersecurity-focused student — minimal, precise, reliable.</p>
+      <div class="cta">
+        <a class="btn" href="resume.pdf" download>Download Resume</a>
+        <a class="btn" href="#contact">Contact Me</a>
       </div>
-      <h1>Hi, I'm Jay.</h1>
-      <div class="typed" id="typed"></div>
-      <p>Welcome to my portfolio.</p>
-    </section>
+    </div>
+  </section>
 
-    <section id="about">
-      <h2>About Me</h2>
-      <p>I’m a final year cybersecurity student passionate about privacy and digital security. What started as a personal mission to stay safe online grew into a deeper interest in how systems work and how to protect them.</p>
-    </section>
-
-    <section id="projects">
-      <h2>Projects</h2>
-      <div class="projects">
-        <div class="project-card">
-          <img src="scr/casaos.png" alt="Casaos Server" loading="lazy">
-          <div class="overlay">Nextcloud + CasaOS deployment</div>
-          <h3>ZimaBlade Server with CasaOS</h3>
-          <p>I deployed a self-hosted Nextcloud instance at home as a personal cloud solution to enhance privacy and reduce dependence on third-party services. Hosting it locally gives me full control over my data and infrastructure.</p>
+  <!-- About -->
+  <section id="about">
+    <div class="wrap reveal">
+      <div class="grid cols-2">
+        <div class="card">
+          <h2>About</h2>
+          <p class="muted">I’m a student with a focus on cybersecurity, networking, and resilient systems.</p>
+        </div>
+        <div class="card">
+          <h2>Focus</h2>
+          <ul class="muted">
+            <li>Defensive security fundamentals</li>
+            <li>Linux, scripting, and tooling</li>
+            <li>Network basics & traffic analysis</li>
+          </ul>
         </div>
       </div>
-    </section>
+    </div>
+  </section>
 
-    <section id="education">
-      <h2>Education</h2>
-      <h4>Mohawk College</h4>
-      <img src="scr/MH-logo.png" alt="Mohawk College Logo" style="width:70px; margin-left: -15px;" loading="lazy">
-      <p>Studying Program 585 at Mohawk College for the past two years, gaining both theoretical knowledge and hands-on cybersecurity experience. Worked at <a href="https://ideaworks.mohawkcollege.ca/research-centre/health-and-e-health-digital-innovation-centre-medic/" style="color: var(--accent-color);">Mohawk Medic</a>, strengthening technical and problem-solving skills.</p>
-    </section>
+  <!-- Skills -->
+  <section id="skills">
+    <div class="wrap reveal">
+      <h2>Skills</h2>
+      <div class="grid cols-3">
+        <div class="card"><h3>Linux</h3><p class="muted">Daily driver, shell scripting, permissions, services.</p></div>
+        <div class="card"><h3>Networking</h3><p class="muted">Subnets, routing basics, Wireshark, troubleshooting.</p></div>
+        <div class="card"><h3>Python</h3><p class="muted">Automation, tooling, simple APIs & parsing.</p></div>
+        <div class="card"><h3>Security Basics</h3><p class="muted">OWASP concepts, password hygiene, threat mindset.</p></div>
+        <div class="card"><h3>Git</h3><p class="muted">Branching, PRs, collaboration, clean commits.</p></div>
+        <div class="card"><h3>Documentation</h3><p class="muted">Clear READMEs, reproducible steps, diagrams.</p></div>
+      </div>
+    </div>
+  </section>
 
-<section id="contact">
-  <h2>Contact Me</h2>
-  <p>If you'd like to work together or have any questions, feel free to send me an email!</p>
-  <div class="contact-actions">
-    <span id="email-link"></span>
-    <a href="resume.pdf" download class="resume-button">Download Resume</a>
-  </div>
-</section>
+  <!-- Projects -->
+  <section id="projects">
+    <div class="wrap reveal">
+      <h2>Projects</h2>
+      <div class="grid cols-2">
+        <article class="card">
+          <img src="Images/CasaOS_logo.png" alt="CasaOS Project" class="project-img" />
+          <h3>CasaOS Home Cloud</h3>
+          <p class="muted">Deployed CasaOS on a local server to run self-hosted apps securely. Configured Docker containers, firewall, and SSL to make a lightweight personal cloud.</p>
+          <a class="btn" href="https://casaos.zimaspace.com">View</a>
+        </article>
+        <article class="card">
+          <img src="Images/Discord-logo.png" alt="CasaOS Project" class="project-img" />
+          <h3>Kiraro Discord Bot</h3>
+          <p class="muted">Developed a customizable Discord bot featuring modular commands and smooth user interaction—streamlining server utility with maintainable code.</p>
+          <a class="btn" href="https://github.com/gun4qmm7h/Kiraro-Discord-Bot">View</a>
+        </article>
+      </div>
+    </div>
+  </section>
 
-<script>
-  document.addEventListener("DOMContentLoaded", function() {
-    var user = "Jay";
-    var domain = "tajcybersecurity.com";
-    var email = user + "@" + domain;
-    var link = document.createElement("a");
-    link.href = "mailto:" + email;
-    link.textContent = "Send Email";
-    link.className = "contact-button";
-    document.getElementById("email-link").appendChild(link);
-  });
-</script>
-  </main>
+  <!-- Contact -->
+  <section id="contact">
+    <div class="wrap reveal">
+      <div class="contact-box card">
+        <h2>Contact</h2>
+        <p class="muted">Email is obfuscated to prevent scraping. Click below to reveal/send.</p>
+        <p>
+          <a id="email-link" class="btn" href="#" rel="nofollow noopener">Reveal Email</a>
+        </p>
+        <noscript><p class="muted">Enable JavaScript to view the email address.</p></noscript>
+        <p class="muted" id="email-text" aria-live="polite"></p>
+      </div>
+    </div>
+  </section>
 
   <footer>
-    &copy; 2025 Jay Taj. All rights reserved.
+    © <span id="year"></span> Jay Taj. All rights reserved.
   </footer>
 
   <script>
-    const observer = new IntersectionObserver((entries) => {
-      entries.forEach(entry => {
-        if (entry.isIntersecting) {
-          entry.target.classList.add('visible');
-          observer.unobserve(entry.target);
-        }
-      });
-    }, { threshold: 0.1 });
-    document.querySelectorAll('section').forEach(sec => observer.observe(sec));
+    // ===== Responsive monochrome particle network (no libraries) =====
+    (function(){
+      const canvas = document.getElementById('bg-canvas');
+      const ctx = canvas.getContext('2d');
+      let w, h, particles = [], mouse = {x:null,y:null};
 
-    const burger = document.getElementById('hamburger');
-    const mobileNav = document.getElementById('mobile-nav');
-    burger.onclick = () => mobileNav.classList.toggle('open');
+      function resize(){ w = canvas.width = window.innerWidth; h = canvas.height = window.innerHeight; }
+      window.addEventListener('resize', resize, {passive:true});
+      resize();
 
-    const links = document.querySelectorAll('nav a');
-    window.addEventListener('scroll', () => {
-      let fromTop = window.scrollY + 100;
-      links.forEach(link => {
-        let section = document.querySelector(link.hash);
-        if (section.offsetTop <= fromTop && section.offsetTop + section.offsetHeight > fromTop) {
-          link.classList.add('active');
-        } else {
-          link.classList.remove('active');
-        }
-      });
-    });
-
-    const typedEl = document.getElementById('typed');
-    const text = "Network Admin and Cybersecurity";
-    let idx = 0;
-    function type() {
-      if (idx < text.length) {
-        typedEl.textContent += text.charAt(idx);
-        idx++;
-        setTimeout(type, 100);
+      class P{ constructor(x,y){ this.x=x; this.y=y; this.vx=(Math.random()-0.5)*.9; this.vy=(Math.random()-0.5)*.9; this.s=2; }
+        step(){ this.x+=this.vx; this.y+=this.vy; if(this.x<0||this.x>w) this.vx*=-1; if(this.y<0||this.y>h) this.vy*=-1; ctx.beginPath(); ctx.arc(this.x,this.y,this.s,0,Math.PI*2); ctx.fillStyle = '#cfcfcf'; ctx.fill(); }
       }
+      function init(n){ particles.length=0; for(let i=0;i<n;i++){ particles.push(new P(Math.random()*w,Math.random()*h)); } }
+      function links(){ for(let i=0;i<particles.length;i++){ for(let j=i+1;j<particles.length;j++){ const a=particles[i], b=particles[j]; const dx=a.x-b.x, dy=a.y-b.y; const d=Math.hypot(dx,dy); if(d<120){ ctx.beginPath(); ctx.strokeStyle = 'rgba(200,200,200,'+(1-d/120)+')'; ctx.lineWidth = 1; ctx.moveTo(a.x,a.y); ctx.lineTo(b.x,b.y); ctx.stroke(); } } } }
+      function animate(){ ctx.clearRect(0,0,w,h); particles.forEach(p=>p.step()); links(); if(mouse.x&&mouse.y){ particles.forEach(p=>{ const dx=p.x-mouse.x, dy=p.y-mouse.y, d=Math.hypot(dx,dy); if(d<150){ ctx.beginPath(); ctx.strokeStyle='rgba(220,220,220,.5)'; ctx.lineWidth=1.2; ctx.moveTo(p.x,p.y); ctx.lineTo(mouse.x,mouse.y); ctx.stroke(); } }); }
+        requestAnimationFrame(animate); }
+      window.addEventListener('mousemove', e=>{ mouse.x=e.clientX; mouse.y=e.clientY; });
+      window.addEventListener('mouseout', ()=>{ mouse.x=null; mouse.y=null; });
+      init(window.innerWidth<600?38:78); animate();
+    })();
+
+    // ===== Reveal-on-scroll animations =====
+    (function(){
+      const els = document.querySelectorAll('.reveal');
+      const io = new IntersectionObserver(entries=>{
+        entries.forEach(ent=>{ if(ent.isIntersecting){ ent.target.classList.add('show'); io.unobserve(ent.target); } });
+      }, {threshold:.14});
+      els.forEach(el=>io.observe(el));
+    })();
+
+    // ===== Email anti-scrape (JS-only) =====
+(function(){
+  const link = document.getElementById('email-link');
+  const out = document.getElementById('email-text');
+
+  const u = [106,97,121];            
+  const d = [116, 97, 106, 99, 121, 98, 101, 114, 115, 101, 99, 117, 114, 105, 116, 121, 46, 99, 111, 109]; 
+  function str(a){ return a.map(c=>String.fromCharCode(c)).join(''); }
+  const user = str(u);
+  const domain = str(d);
+  const address = user + '@' + domain;
+
+  let revealed = false;
+
+  link.addEventListener('click', (e)=>{
+    e.preventDefault();
+    if (!revealed) {
+      link.textContent = address;
+      revealed = true;
+    } else {
+      window.location.href = 'mailto:' + address;
+      out.textContent = 'Opening your mail client…';
     }
-    type();
+  });
+})();
+
+    // Footer year
+    document.getElementById('year').textContent = new Date().getFullYear();
   </script>
 </body>
 </html>
-
+ 
